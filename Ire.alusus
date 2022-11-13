@@ -1,0 +1,42 @@
+import "libhiredis.so.0.14";
+
+module Ire { 
+    class RedisContext {
+        def redisContextFuncs: ptr[func];   /* Function table */
+        def  err: int; /* Error flags, 0 when there is no error */
+        def  errstr: array[char, 128]; /* String representation of error when applicable */
+    };
+    
+    class RedisReply {
+        def tp:  int; /* REDIS_REPLY_* */
+        def integer: int[64]; /* The integer when type is REDIS_REPLY_INTEGER */
+
+        // TODO: Uncomment after switching to version 1
+        // def dval: float[64]; /* The double when type is REDIS_REPLY_DOUBLE */
+
+        def len: int[64]; /* Length of string */
+        def str: ptr[char]; /* Used for REDIS_REPLY_ERROR, REDIS_REPLY_STRING
+                               REDIS_REPLY_VERB, REDIS_REPLY_DOUBLE (in additional to dval),
+                               and REDIS_REPLY_BIGNUM. */
+
+        // TODO: Uncomment after switching to version 1
+        // def vtype: array[char, 4]; /* Used for REDIS_REPLY_VERB, contains the null
+        //                               terminated 3 character content type, such as "txt". */
+
+        def elements: int[64]; /* number of elements, for REDIS_REPLY_ARRAY */
+        def element:  ptr[ptr[RedisReply]]; /* elements vector for REDIS_REPLY_ARRAY */
+    };
+    
+    @expname[redisConnect]
+    func redisConnect(host: ptr[char], port: int): ptr[RedisContext];
+   
+    @expname[redisCommand]
+    func redisCommand(c: ptr[RedisContext], format: ptr[char], ... any): ptr[RedisReply];
+    
+    @expname[freeReplyObject]
+    func freeReplyObject(reply: ptr);
+    
+    @expname[redisFree]
+    func redisFree(c: ptr[RedisContext]);
+}
+

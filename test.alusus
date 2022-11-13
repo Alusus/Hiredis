@@ -1,0 +1,54 @@
+import "Srl/Console";
+import "Srl/System";
+import "Ire";
+
+func main {
+    use Ire;
+    use Srl;
+
+    def j: int;
+    def isunix: int;
+    def c: ptr[RedisContext];
+    def reply: ptr[RedisReply];
+    def hostname: ptr[char] = "0.0.0.0";
+    def port: Int = 6379;
+
+    c = redisConnect(hostname, port);
+
+    if  c == null {
+        Console.print("Connection error: can't allocate redis context\n");
+        System.exit(1);
+    } else if c~cnt.err != 0 {
+        Console.print("Connection error: %s\n", c~cnt.errstr);
+        System.exit(1);
+    }
+
+    reply = redisCommand(c, "SET %s %s", "foo", "hello world");
+    Console.print("SET: %s\n", reply~cnt.str);
+    freeReplyObject(reply);
+
+    reply = redisCommand(c, "PING");
+    Console.print("PING: %s\n", reply~cnt.str);
+    freeReplyObject(reply);
+
+    reply = redisCommand(c, "SET %b %b", "bar", 3i64, "hello", 5i64);
+    Console.print("SET (binary API): %s\n", reply~cnt.str);
+    freeReplyObject(reply);
+
+    reply = redisCommand(c, "GET foo");
+    Console.print("GET foo: %s\n", reply~cnt.str);
+    freeReplyObject(reply);
+
+    reply = redisCommand(c, "INCR counter");
+    Console.print("INCR counter: %lld\n", reply~cnt.integer);
+    freeReplyObject(reply);
+
+    reply = redisCommand(c, "DEL mylist");
+    freeReplyObject(reply);
+
+    /* Disconnects and frees the context */
+    redisFree(c);
+}
+
+main();  
+
