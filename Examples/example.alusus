@@ -1,0 +1,49 @@
+import "Srl/Console";
+import "Srl/System";
+import "Apm";
+Apm.importFile("Alusus/Hiredis");
+
+func main {
+    use Srl;
+
+    def c: ptr[Hiredis.Context] = 0;
+    def reply: ptr[Hiredis.Reply];
+
+    c = Hiredis.connect("0.0.0.0", 6379);
+
+    if c == null {
+        Console.print("Connection error: can't allocate redis context\n");
+        System.exit(1);
+    } else if c~cnt.err != 0 {
+        Console.print("Connection error: %s\n", c~cnt.errStr~ptr);
+        System.exit(1);
+    }
+
+    reply = Hiredis.command(c, "SET %s %s", "foo", "hello world");
+    Console.print("SET: %s\n", reply~cnt.str);
+    Hiredis.free(reply);
+
+    reply = Hiredis.command(c, "PING");
+    Console.print("PING: %s\n", reply~cnt.str);
+    Hiredis.free(reply);
+
+    reply = Hiredis.command(c, "SET %b %b", "bar", 3i64, "hello", 5i64);
+    Console.print("SET (binary API): %s\n", reply~cnt.str);
+    Hiredis.free(reply);
+
+    reply = Hiredis.command(c, "GET foo");
+    Console.print("GET foo: %s\n", reply~cnt.str);
+    Hiredis.free(reply);
+
+    reply = Hiredis.command(c, "INCR counter");
+    Console.print("INCR counter: %lld\n", reply~cnt.integer);
+    Hiredis.free(reply);
+
+    reply = Hiredis.command(c, "DEL mylist");
+    Hiredis.free(reply);
+
+    Hiredis.free(c);
+}
+
+main();
+
