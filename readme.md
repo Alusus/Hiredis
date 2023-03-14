@@ -90,7 +90,7 @@ main();
 class Context {
     def err: int; /* Error flags, 0 when there is no error */
     def errStr: array[char, 128]; /* String representation of error when applicable */
-};
+}
 ```
 
 This type is used to connect to redis and execute the commands on it.
@@ -113,7 +113,7 @@ class Reply {
 
     def elementsCount: int[64]; /* number of elements, for REDIS_REPLY_ARRAY */
     def elements: ptr[ptr[Reply]]; /* elements vector for REDIS_REPLY_ARRAY */
-};
+}
 ```
 
 This type represents the reply that we get after executing a command.
