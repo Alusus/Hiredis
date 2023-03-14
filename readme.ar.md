@@ -85,7 +85,7 @@ Apm.importFile("Alusus/Hiredis");
 ابدأ()؛
 ```
 
-<div dir=rtl>
+</div>
 
 ```
 import "Srl/Console";
