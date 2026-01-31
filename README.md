@@ -1,5 +1,5 @@
 # Hiredis
-[[عربي]](readme.ar.md)
+[[عربي]](README.ar.md)
 
 This library is a binding of Hiredis to Alusus. Hiredis is a library to work with Redis which is an in-memory key-value storage.
 
@@ -170,3 +170,12 @@ This function is used to free the memory used to hold the reply object.
 func free(c: ptr[Context]);
 ```
 This function is used to free the memory used to hold the context object.
+
+---
+
+## License
+
+Copyright (C) 2022 Alusus Software Ltd.
+
+This project is licensed under the BSD license. See the `LICENSE` file for details.
+
