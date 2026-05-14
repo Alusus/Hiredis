@@ -1,7 +1,7 @@
 import "Srl/Console";
 import "Srl/System";
 import "Apm";
-Apm.importFile("Alusus/Hiredis");
+Apm.importPackage("Alusus/Hiredis@0.1");
 
 func main {
     use Srl;
