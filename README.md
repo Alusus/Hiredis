@@ -1,11 +1,11 @@
 # Hiredis
-[[عربي]](README.ar.md)
-
+[[العربيه]](README.ar.md)
 This library is a binding of Hiredis to Alusus. Hiredis is a library to work with Redis which is an in-memory key-value storage.
 
 ## Adding to the Project
 
 Add the library to the project using the following statements:
+
 ```
 import "Apm";
 Apm.importFile("Alusus/Hiredis");
@@ -95,9 +95,21 @@ class Context {
 
 This type is used to connect to redis and execute the commands on it.
 
-`err` represents the error code, it has the value 0 when there is no error.
+#### err
 
-`errStr` represents the error message if any.
+```
+def err: int;
+```
+
+Represents the error code, it has the value 0 when there is no error.
+
+#### errStr
+
+```
+def errStr: array[char, 128];
+```
+
+Represents the error message if any.
 
 ### Reply
 
@@ -118,64 +130,96 @@ class Reply {
 
 This type represents the reply that we get after executing a command.
 
-`tp` represents the reply type.
+#### tp
 
-`integer` holds the reply value if it is of integer type.
+```
+def tp: int;
+```
 
-`str` holds the reply value if it is of textual type.
+Represents the reply type.
 
-`elementsCount` represents the number of elements in the list if the reply has vector type.
+#### integer
 
-`elements` holds the list of values if the reply has vector type.
+```
+def integer: int[64];
+```
+
+Holds the reply value if it is of integer type.
+
+#### strLen
+
+```
+def strLen: int[64];
+```
+
+Length of string.
+
+#### str
+
+```
+def str: ptr[char];
+```
+
+Holds the reply value if it is of textual type.
+
+#### elementsCount
+
+```
+def elementsCount: int[64];
+```
+
+Represents the number of elements in the list if the reply has vector type.
+
+#### elements
+
+```
+def elements: ptr[ptr[Reply]];
+```
+
+Holds the list of values if the reply has vector type.
 
 ### connect
 
 ```
 @expname[redisConnect]
-func connect(host: ptr[char], port: int): ptr[Context];
+func connect(host: ptr[char], port: int): ptr[Context]
 ```
-This function is used to connect to redis.
 
-`host` the host address.
+Connect to redis. Returns a pointer to the context that we can use to manage this connection if it is succeed, or a pointer to null if the connection does not succeed.
 
-`port` the port that we can access redis through it.
-
-It returns a pointer to the context that we can use to manage this connection if it is succeed,
-or a pointer to null if the connection does not succeed.
+* `host`: The host address.
+* `port`: The port that we can access redis through it.
 
 ### command
 
 ```
 @expname[redisCommand]
-func command(c: ptr[Context], format: ptr[char], ... any): ptr[Reply];
+func command(c: ptr[Context], format: ptr[char], ... any): ptr[Reply]
 ```
-This function is used to execute a given command on redis, like setting or getting a value.
 
-`c` the context variable that manages the connection to redis.
+Execute a given command on redis, like setting or getting a value.
 
-`format` the format of the command we want to execute.
-
-`any` any arguments that the format needs.
+* `c`: The context variable that manages the connection to redis.
+* `format`: The format of the command to execute.
+* `any`: Any arguments that the format needs.
 
 ### free
 
 ```
 @expname[freeReplyObject]
-func free(reply: ptr[Reply]);
-```
-This function is used to free the memory used to hold the reply object.
+func free(reply: ptr[Reply])
 
-```
 @expname[redisFree]
-func free(c: ptr[Context]);
+func free(c: ptr[Context])
 ```
-This function is used to free the memory used to hold the context object.
 
----
+Free the memory used to hold the given object.
+
+* `reply`: Free the memory used to hold the reply object.
+* `c`: Free the memory used to hold the context object.
 
 ## License
 
 Copyright (C) 2022 Alusus Software Ltd.
 
 This project is licensed under the BSD license. See the `LICENSE` file for details.
-

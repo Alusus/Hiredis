@@ -1,19 +1,24 @@
 # Hiredis
 [[English]](README.md)
 
+<div dir=rtl>
+
 هذه المكتبة عبارة عن ربط بين لغة الأسس و ال Hiredis و التي بدورها عبارة عن مكتبة للتعامل مع ال redis التي تعد مخزن بيانات ضمن الذاكرة يستعمل كقاعدة بيانات أو كذاكرة مخبئية.
 
 ## إضافة المكتبة للمشروع
 
 يمكن تثبيت هذه المكتبة باستعمال التعليمات البرمجية التالية:
+
+<div dir=ltr>
+
 ```
 import "Apm";
 Apm.importFile("Alusus/Hiredis");
 ```
 
-## مثال
+</div>
 
-<div dir=rtl>
+## مثال
 
 ```
 اشمل "مـتم/طـرفية"؛
@@ -85,7 +90,7 @@ Apm.importFile("Alusus/Hiredis");
 ابدأ()؛
 ```
 
-</div>
+<div dir=ltr>
 
 ```
 import "Srl/Console";
@@ -96,14 +101,14 @@ Apm.importFile("Alusus/Hiredis");
 func main {
     use Srl;
 
-    // نعريف المتغيرات اللازمة للاتصال و التعامل مع المستودع
+    // The variables we need to connect and communicate with redis
     def c: ptr[Hiredis.Context] = 0;
     def reply: ptr[Hiredis.Reply];
 
-    // اتصل بالمستودع على المنفذ المحدد
+    // connect to redis on the specified port
     c = Hiredis.connect("0.0.0.0", 6379);
 
-    // اختبر فيما إذا نجح الاتصال أم لا
+    // check if the connection succeed or not
     if c == null {
         Console.print("Connection error: can't allocate redis context\n");
         System.exit(1);
@@ -112,36 +117,37 @@ func main {
         System.exit(1);
     }
 
-    // foo في المفتاح hello worldتنفيذ أمر وضع قيمة 
+    // execute the command SET which put the value `hellp world` into the key foo
     reply = Hiredis.command(c, "SET %s %s", "foo", "hello world");
     Console.print("SET: %s\n", reply~cnt.str);
-    // تحرير الذاكرة التي تم استعمالها من أجل الرد
+    // free the memory that we used to hold the reply
     Hiredis.free(reply);
 
-    // foo تنفيذ أمر جلب القيمة المخزنة في المفتاح
+    // Execute the command GET that fetch the value stored in the key `foo`
     reply = Hiredis.command(c, "GET %s", "foo");
     Console.print("GET foo: %s\n", reply~cnt.str);
     Hiredis.free(reply);
 
-    // تنفيذ أمر حذف مفتاح من المستودع و ذلك لكي نزيل أي محتوى
-    // تم وضعه نتيجة تنفيذ الكود مسبقاً
+    // Execute the command DEL that delete the key `numbers` from the redis
+    // we need this to ensure that no old values are still there.
     reply = Hiredis.command(c, "DEL numbers");
     Hiredis.free(reply);
 
-    // numbers سنقوم بوضع أربع عناصر في القائمة ضمن المفتاح
+    // Execute the command RPUSH that puts the value to the right of
+    // the numbers list
     def i: int;
     for i = 0, i < 4 , ++i {
         reply = Hiredis.command(c, "RPUSH numbers %d", i);
         Hiredis.free(reply);
     }
 
-    // مع تحديد المجالLRANGE يمكن جلب عناصر القائمة عن طريق الأمر 
-    // و المجال هنا من البداية حتى النهاية التي نرمز لها ب -1
+    // Execute the commandd LRANGE that fetch the list values in the
+    // specified range, -1 means the end of the list
     reply = Hiredis.command(c, "LRANGE numbers 0 -1");
     Console.print("numbers: ");
     for i = 0, i < reply~cnt.elementsCount , ++i {
         def p: ptr[ptr[Hiredis.Reply]];
-        // ننقل المؤشر إلى المكان المطلوب
+        // move the pointer to the desired location
         p = reply~cnt.elements + i;
         Console.print(" %s", p~cnt~cnt.str);
     }
@@ -155,20 +161,20 @@ func main {
 main();
 ```
 
+</div>
+
 ## الأصناف و الدوال
 
 ### سـياق (Context)
 
-<div dir=rtl>
-
 ```
 صنف سـياق {
     عرف خطأ: صـحيح؛
-    عرف نص_الخطأ: مصفوفة[مـحرف، 128]؛
+    عرف نص_الخطأ: مـصفوفة[مـحرف، 128]؛
 }
 ```
 
-</div>
+<div dir=ltr>
 
 ```
 class Context {
@@ -177,24 +183,56 @@ class Context {
 }
 ```
 
-هذا الصنف يتم عن طريقه الاتصال بالمستودع وتنفيذ الأوامر التي نريدها. يمثل المتغير `خطأ` (`err`) رمز الخطأ، و يكون 0 في حال عدم
-حدوث خطأ أما `نص_الخطأ` (`errStr`) فيمثل رسالة الخطأ في حال حدوثه.
+</div>
 
-### الـرد (Reply)
+هذا الصنف يتم عن طريقه الاتصال بالمستودع وتنفيذ الأوامر التي نريدها.
 
-<div dir=rtl>
+#### خطأ (err)
 
 ```
-صنف الـرد {
-    عرف عدد_صحيح: صحيح؛
-    عرف طول_النص: صحيح[64]؛
-    عرف نص: مؤشر[محرف]؛
-    عرف عدد_العناصر: صحيح[64]؛
-    عرف عناصر: مؤشر[مؤشر[الرد]]؛
-}
+عرف خطأ: صـحيح؛
+```
+
+<div dir=ltr>
+
+```
+def err: int;
 ```
 
 </div>
+
+يمثل رمز الخطأ، ويكون 0 في حال عدم حدوث خطأ.
+
+#### نص_الخطأ (errStr)
+
+```
+عرف نص_الخطأ: مـصفوفة[مـحرف، 128]؛
+```
+
+<div dir=ltr>
+
+```
+def errStr: array[char, 128];
+```
+
+</div>
+
+يمثل رسالة الخطأ في حال حدوثه.
+
+### الـرد (Reply)
+
+```
+صنف الـرد {
+    عرف النوع: صـحيح؛
+    عرف عدد_صحيح: صـحيح[64]؛
+    عرف طول_النص: صـحيح[64]؛
+    عرف نص: مـؤشر[مـحرف]؛
+    عرف عدد_العناصر: صـحيح[64]؛
+    عرف عناصر: مـؤشر[مـؤشر[الـرد]]؛
+}
+```
+
+<div dir=ltr>
 
 ```
 class Reply {
@@ -211,89 +249,175 @@ class Reply {
 }
 ```
 
+</div>
+
 هذا الصنف يمثل الرد الذي يأتي بعد تنفيذ أمر ما.
 
-`عدد_صحيح` (`integer`) يحمل قيمة الرد في حال كان الرد من النمط الصحيح.
+#### النوع (tp)
 
-`نص` (`str`) يحمل قيمة الرد في حال كان الرد من النمط النصي.
+```
+عرف النوع: صـحيح؛
+```
 
-`طول_النص` (`strLen`) عدد محارف `نص`.
+<div dir=ltr>
 
-`عناصر` (`elements`) قائمة القيم في حال كان نمط الرد هو قائمة.
+```
+def tp: int;
+```
 
-`عدد_العناصر` (`elementsCount`) يحمل عدد العناصر في القائمة في حال كان الرد عبارة عن قائمة من القيم.
+</div>
+
+يمثل نوع الرد.
+
+#### عدد_صحيح (integer)
+
+```
+عرف عدد_صحيح: صـحيح[64]؛
+```
+
+<div dir=ltr>
+
+```
+def integer: int[64];
+```
+
+</div>
+
+يحمل قيمة الرد في حال كان الرد من النمط الصحيح.
+
+#### طول_النص (strLen)
+
+```
+عرف طول_النص: صـحيح[64]؛
+```
+
+<div dir=ltr>
+
+```
+def strLen: int[64];
+```
+
+</div>
+
+عدد محارف `نص`.
+
+#### نص (str)
+
+```
+عرف نص: مـؤشر[مـحرف]؛
+```
+
+<div dir=ltr>
+
+```
+def str: ptr[char];
+```
+
+</div>
+
+يحمل قيمة الرد في حال كان الرد من النمط النصي.
+
+#### عدد_العناصر (elementsCount)
+
+```
+عرف عدد_العناصر: صـحيح[64]؛
+```
+
+<div dir=ltr>
+
+```
+def elementsCount: int[64];
+```
+
+</div>
+
+يحمل عدد العناصر في القائمة في حال كان الرد عبارة عن قائمة من القيم.
+
+#### عناصر (elements)
+
+```
+عرف عناصر: مـؤشر[مـؤشر[الـرد]]؛
+```
+
+<div dir=ltr>
+
+```
+def elements: ptr[ptr[Reply]];
+```
+
+</div>
+
+قائمة القيم في حال كان نمط الرد هو قائمة.
 
 ### اتصل (connect)
-
-<div dir=rtl>
 
 ```
 @تصدير[redisConnect]
 عرف اتصل(مضيف: مؤشر[محرف]، منفذ: صحيح): مؤشر[السياق]؛
 ```
 
-</div>
+<div dir=ltr>
 
 ```
 @expname[redisConnect]
-func connect(host: ptr[char], port: int): ptr[Context];
+func connect(host: ptr[char], port: int): ptr[Context]
 ```
 
-تستعمل هذا الدالة للاتصال بال redis  و يجب أن نمرر لها عنوان المضيف والمنفذ الذي تعمل عليه هذه الخدمة.
-و تعيد هذا الدالة مؤشر يؤشر على متغير من النمط `سـياق` (`Context`) في حال نجاح الاتصال وإلا مؤشر صفري (null).
+</div>
+
+تستعمل هذه الدالة للاتصال بال redis. تعيد مؤشراً يؤشر على متغير من النمط `سـياق` (`Context`) في حال نجاح الاتصال وإلا مؤشراً صفرياً (null).
+
+* `مضيف` (`host`): عنوان المضيف.
+* `منفذ` (`port`): المنفذ الذي تعمل عليه خدمة redis.
 
 ### أمر (command)
-
-<div dir=rtl>
 
 ```
 @تصدير[redisCommand]
 عرف أمر(سياق: مؤشر[السياق]، الصيغة: مؤشر[محرف]، ...أي وسيط آخر): مؤشر[الرد]؛
 ```
 
-</div>
+<div dir=ltr>
 
 ```
 @expname[redisCommand]
-func command(c: ptr[Context], format: ptr[char], ... any): ptr[Reply];
+func command(c: ptr[Context], format: ptr[char], ... any): ptr[Reply]
 ```
 
-تستعمل هذه الدالة لتنفيذ أمر ما على المستودع، مثل وضع قيمة أو جلب قيمة منه، و يجب تمرير مؤشر من الصنف
-`سـياق` (`Context`) يمثل المؤشر الذي يحمل معلومات الاتصال، بالإضافة إلى الأمر المراد تنفيذه.
+</div>
+
+تستعمل هذه الدالة لتنفيذ أمر ما على المستودع، مثل وضع قيمة أو جلب قيمة منه.
+
+* `سياق` (`c`): المتغير الذي يحمل معلومات الاتصال.
+* `الصيغة` (`format`): الصيغة التي يتبعها الأمر المراد تنفيذه.
+* `أي وسيط آخر` (`any`): المعطيات التي تحتاجها الصيغة.
 
 ### حرر (free)
-
-<div dir=rtl>
 
 ```
 @تصدير[freeReplyObject]
 عرف حرر(رد: مؤشر[الرد])؛
-```
 
-</div>
-
-```
-@expname[freeReplyObject]
-func free(reply: ptr[Reply]);
-```
-
-تستعمل هذه الدالة لتحرير الذاكرة التي تم يؤشر عليها متحول من الصنف `الـرد` (`Reply`).
-
-<div dir=rtl>
-
-```
 @تصدير[redisFree]
 عرف حرر(سياق: مؤشر[السياق])؛
 ```
 
+<div dir=ltr>
+
+```
+@expname[freeReplyObject]
+func free(reply: ptr[Reply])
+
+@expname[redisFree]
+func free(c: ptr[Context])
+```
+
 </div>
 
-```
-@expname[redisFree]
-func free(c: ptr[Context]);
-```
+تستعمل هذه الدالة لتحرير الذاكرة المُخصصة للكائن المعطى.
 
-تستعمل هذه الدالة لتحرير الذاكرة التي تم يؤشر عليها متحول من الصنف `سـياق` (`Context`).
+* `رد` (`reply`): تحرير الذاكرة المُخصصة لكائن الرد.
+* `سياق` (`c`): تحرير الذاكرة المُخصصة لكائن السياق.
 
 ---
 
@@ -303,4 +427,4 @@ func free(c: ptr[Context]);
 
 هذا المشروع مرخص بموجب رخصة BSD. راجع ملف `LICENSE` للحصول على التفاصيل.
 
-
+</div>
