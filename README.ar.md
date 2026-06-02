@@ -1,7 +1,6 @@
 # Hiredis
-[[English]](README.md)
 
-<div dir=rtl>
+[[English]](README.md)
 
 هذه المكتبة عبارة عن ربط بين لغة الأسس و ال Hiredis و التي بدورها عبارة عن مكتبة للتعامل مع ال redis التي تعد مخزن بيانات ضمن الذاكرة يستعمل كقاعدة بيانات أو كذاكرة مخبئية.
 
@@ -9,14 +8,21 @@
 
 يمكن تثبيت هذه المكتبة باستعمال التعليمات البرمجية التالية:
 
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-import "Apm";
-Apm.importFile("Alusus/Hiredis");
+اشمل "مـحا"؛
+مـحا.اشمل_حزمة("Alusus/Hiredis@0.1"، "هـايردس.أسس")
 ```
 
 </div>
+
+```
+import "Apm";
+Apm.importPackage("Alusus/Hiredis@0.1", "Hiredis.alusus");
+```
+
+<div dir=rtl>
 
 ## مثال
 
@@ -24,7 +30,7 @@ Apm.importFile("Alusus/Hiredis");
 اشمل "مـتم/طـرفية"؛
 اشمل "مـتم/نـظام"؛
 اشمل "مـحا"؛
-مـحا.اشمل_ملف("Alusus/Hiredis"، "هـايردس.أسس")؛
+مـحا.اشمل_حزمة("Alusus/Hiredis@0.1"، "هـايردس.أسس")
 
 دالة ابدأ {
     استخدم مـتم؛
@@ -90,13 +96,13 @@ Apm.importFile("Alusus/Hiredis");
 ابدأ()؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 import "Srl/Console";
 import "Srl/System";
 import "Apm";
-Apm.importFile("Alusus/Hiredis");
+Apm.importPackage("Alusus/Hiredis@0.1", "Hiredis.alusus");
 
 func main {
     use Srl;
@@ -161,11 +167,11 @@ func main {
 main();
 ```
 
-</div>
-
 ## الأصناف و الدوال
 
 ### سـياق (Context)
+
+<div dir=rtl>
 
 ```
 صنف سـياق {
@@ -174,7 +180,7 @@ main();
 }
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 class Context {
@@ -183,43 +189,43 @@ class Context {
 }
 ```
 
-</div>
-
 هذا الصنف يتم عن طريقه الاتصال بالمستودع وتنفيذ الأوامر التي نريدها.
 
 #### خطأ (err)
+
+<div dir=rtl>
 
 ```
 عرف خطأ: صـحيح؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 def err: int;
 ```
 
-</div>
-
 يمثل رمز الخطأ، ويكون 0 في حال عدم حدوث خطأ.
 
 #### نص_الخطأ (errStr)
+
+<div dir=rtl>
 
 ```
 عرف نص_الخطأ: مـصفوفة[مـحرف، 128]؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 def errStr: array[char, 128];
 ```
 
-</div>
-
 يمثل رسالة الخطأ في حال حدوثه.
 
 ### الـرد (Reply)
+
+<div dir=rtl>
 
 ```
 صنف الـرد {
@@ -232,7 +238,7 @@ def errStr: array[char, 128];
 }
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 class Reply {
@@ -249,121 +255,119 @@ class Reply {
 }
 ```
 
-</div>
-
 هذا الصنف يمثل الرد الذي يأتي بعد تنفيذ أمر ما.
 
 #### النوع (tp)
+
+<div dir=rtl>
 
 ```
 عرف النوع: صـحيح؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 def tp: int;
 ```
 
-</div>
-
 يمثل نوع الرد.
 
 #### عدد_صحيح (integer)
+
+<div dir=rtl>
 
 ```
 عرف عدد_صحيح: صـحيح[64]؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 def integer: int[64];
 ```
 
-</div>
-
 يحمل قيمة الرد في حال كان الرد من النمط الصحيح.
 
 #### طول_النص (strLen)
+
+<div dir=rtl>
 
 ```
 عرف طول_النص: صـحيح[64]؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 def strLen: int[64];
 ```
 
-</div>
-
 عدد محارف `نص`.
 
 #### نص (str)
+
+<div dir=rtl>
 
 ```
 عرف نص: مـؤشر[مـحرف]؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 def str: ptr[char];
 ```
 
-</div>
-
 يحمل قيمة الرد في حال كان الرد من النمط النصي.
 
 #### عدد_العناصر (elementsCount)
+
+<div dir=rtl>
 
 ```
 عرف عدد_العناصر: صـحيح[64]؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 def elementsCount: int[64];
 ```
 
-</div>
-
 يحمل عدد العناصر في القائمة في حال كان الرد عبارة عن قائمة من القيم.
 
 #### عناصر (elements)
+
+<div dir=rtl>
 
 ```
 عرف عناصر: مـؤشر[مـؤشر[الـرد]]؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 def elements: ptr[ptr[Reply]];
 ```
 
-</div>
-
 قائمة القيم في حال كان نمط الرد هو قائمة.
 
 ### اتصل (connect)
+
+<div dir=rtl>
 
 ```
 @تصدير[redisConnect]
 عرف اتصل(مضيف: مؤشر[محرف]، منفذ: صحيح): مؤشر[السياق]؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 @expname[redisConnect]
 func connect(host: ptr[char], port: int): ptr[Context]
 ```
-
-</div>
 
 تستعمل هذه الدالة للاتصال بال redis. تعيد مؤشراً يؤشر على متغير من النمط `سـياق` (`Context`) في حال نجاح الاتصال وإلا مؤشراً صفرياً (null).
 
@@ -372,19 +376,19 @@ func connect(host: ptr[char], port: int): ptr[Context]
 
 ### أمر (command)
 
+<div dir=rtl>
+
 ```
 @تصدير[redisCommand]
 عرف أمر(سياق: مؤشر[السياق]، الصيغة: مؤشر[محرف]، ...أي وسيط آخر): مؤشر[الرد]؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 @expname[redisCommand]
 func command(c: ptr[Context], format: ptr[char], ... any): ptr[Reply]
 ```
-
-</div>
 
 تستعمل هذه الدالة لتنفيذ أمر ما على المستودع، مثل وضع قيمة أو جلب قيمة منه.
 
@@ -394,6 +398,8 @@ func command(c: ptr[Context], format: ptr[char], ... any): ptr[Reply]
 
 ### حرر (free)
 
+<div dir=rtl>
+
 ```
 @تصدير[freeReplyObject]
 عرف حرر(رد: مؤشر[الرد])؛
@@ -402,7 +408,7 @@ func command(c: ptr[Context], format: ptr[char], ... any): ptr[Reply]
 عرف حرر(سياق: مؤشر[السياق])؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 @expname[freeReplyObject]
@@ -412,14 +418,10 @@ func free(reply: ptr[Reply])
 func free(c: ptr[Context])
 ```
 
-</div>
-
 تستعمل هذه الدالة لتحرير الذاكرة المُخصصة للكائن المعطى.
 
 * `رد` (`reply`): تحرير الذاكرة المُخصصة لكائن الرد.
 * `سياق` (`c`): تحرير الذاكرة المُخصصة لكائن السياق.
-
----
 
 ## الرخصة
 
@@ -427,4 +429,3 @@ func free(c: ptr[Context])
 
 هذا المشروع مرخص بموجب رخصة BSD. راجع ملف `LICENSE` للحصول على التفاصيل.
 
-</div>

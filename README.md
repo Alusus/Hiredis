@@ -8,7 +8,7 @@ Add the library to the project using the following statements:
 
 ```
 import "Apm";
-Apm.importFile("Alusus/Hiredis");
+Apm.importPackage("Alusus/Hiredis@0.1", "Hiredis.alusus");
 ```
 
 ## Example
@@ -17,7 +17,7 @@ Apm.importFile("Alusus/Hiredis");
 import "Srl/Console";
 import "Srl/System";
 import "Apm";
-Apm.importFile("Alusus/Hiredis");
+Apm.importPackage("Alusus/Hiredis@0.1", "Hiredis.alusus");
 
 func main {
     use Srl;
