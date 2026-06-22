@@ -1,4 +1,4 @@
-# Hiredis
+# هـايردس (Hiredis)
 
 <div dir=rtl>
 
